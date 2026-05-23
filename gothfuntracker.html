@@ -1,0 +1,141 @@
+<!-- 🜏 VELVET & VINE — Goth Estate Fund Tracker -->
+
+<div class="goth-fund-widget">
+  <h2>🌹 Goth Estate Fund</h2>
+
+  <div class="fund-display">
+    <span id="currentFunds">§0</span>
+    <span class="goal"> / §400,000</span>
+  </div>
+
+  <div class="progress-container">
+    <div id="progressBar"></div>
+  </div>
+
+  <div class="controls">
+    <input type="number" id="fundInput" placeholder="Enter Simoleons">
+    <button onclick="updateFunds()">Update Funds</button>
+  </div>
+
+  <p id="progressText">0% Complete</p>
+</div>
+
+<style>
+.goth-fund-widget {
+  background: #111111;
+  border: 2px solid #5ae9e4;
+  border-radius: 16px;
+  padding: 20px;
+  color: #f4f4f4;
+  width: 320px;
+  font-family: 'Cinzel', serif;
+  box-shadow: 0 0 15px rgba(90, 233, 228, 0.25);
+}
+
+.goth-fund-widget h2 {
+  text-align: center;
+  color: #5ae9e4;
+  margin-bottom: 16px;
+}
+
+.fund-display {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+}
+
+.goal {
+  color: #888;
+  font-size: 1rem;
+}
+
+.progress-container {
+  width: 100%;
+  height: 22px;
+  background: #222;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid #2f8f8c;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #2f8f8c, #5ae9e4);
+  transition: width 0.4s ease;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.controls input {
+  flex: 1;
+  padding: 8px;
+  background: #1a1a1a;
+  border: 1px solid #5ae9e4;
+  color: white;
+  border-radius: 8px;
+}
+
+.controls button {
+  padding: 8px 12px;
+  background: #2f8f8c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.controls button:hover {
+  background: #5ae9e4;
+  color: #111;
+}
+
+#progressText {
+  text-align: center;
+  color: #bdf7f5;
+}
+</style>
+
+<script>
+const goal = 400000;
+
+// Load saved funds or default to 0
+let currentFunds = parseInt(localStorage.getItem("gothFunds")) || 0;
+
+// Initialize display on page load
+window.onload = function () {
+  refreshDisplay();
+};
+
+function updateFunds() {
+  const input = document.getElementById("fundInput");
+
+  currentFunds = parseInt(input.value) || currentFunds;
+
+  // Save to browser storage
+  localStorage.setItem("gothFunds", currentFunds);
+
+  refreshDisplay();
+
+  input.value = "";
+}
+
+function refreshDisplay() {
+  const percentage = Math.min((currentFunds / goal) * 100, 100);
+
+  document.getElementById("currentFunds").innerText =
+    `§${currentFunds.toLocaleString()}`;
+
+  document.getElementById("progressBar").style.width =
+    `${percentage}%`;
+
+  document.getElementById("progressText").innerText =
+    `${percentage.toFixed(1)}% Complete`;
+}
+</script>
